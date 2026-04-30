@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="fw-bold mb-4">
+        <i class="bi bi-bag me-2"></i>My Orders
+    </h2>
+
+    {% if orders %}
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            {% for order in orders %}
+            <div class="order-row p-4 {% if not forloop.last %}border-bottom{% endif %}">
+                <div class="row align-items-center g-3">
+
+                    <!-- Order Info -->
+                    <div class="col-md-3">
+                        <div class="text-muted small">ORDER PLACED</div>
+                        <div class="fw-semibold small">{{ order.created|date:"d M Y" }}</div>
+                        <div class="text-muted small mt-1">ORDER #{{ order.id }}</div>
+                    </div>
+
+                    <!-- Total -->
+                    <div class="col-md-2">
+                        <div class="text-muted small">TOTAL</div>
+                        <div class="fw-bold">₹{{ order.get_total_cost }}</div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-md-3">
+                        <div class="text-muted small">STATUS</div>
+                        <span class="badge bg-{{ order.status_badge }} mt-1">
+                            {{ order.get_status_display }}
+                        </span>
+                        {% if order.paid %}
+                            <span class="badge bg-success ms-1">Paid</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark ms-1">Payment Pending</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Items Preview -->
+                    <div class="col-md-2">
+                        <div class="text-muted small">ITEMS</div>
+                        <div class="d-flex gap-1 flex-wrap mt-1">
+                            {% for item in order.items.all|slice:":3" %}
+                                {% if item.product and item.product.image %}
+                                    <img src="{{ item.product.image.url }}"
+                                         style="width:36px;height:36px;object-fit:cover;"
+                                         class="rounded border"
+                                         title="{{ item.product_name }}">
+                                {% else %}
+                                    <div class="bg-light rounded border d-flex align-items-center justify-content-center"
+                                         style="width:36px;height:36px;"
+                                         title="{{ item.product_name }}">
+                                        <i class="bi bi-image text-muted small"></i>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            {% if order.items.count > 3 %}
+                                <div class="bg-secondary rounded d-flex align-items-center justify-content-center text-white"
+                                     style="width:36px;height:36px;font-size:11px;">
+                                    +{{ order.items.count|add:"-3" }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="col-md-2 text-md-end">
+                        <a href="{% url 'orders:order_detail' order.id %}"
+                           class="btn btn-outline-warning btn-sm">
+                            <i class="bi bi-eye me-1"></i>View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-5">
+        <i class="bi bi-bag-x display-1 text-muted"></i>
+        <h3 class="mt-3 fw-bold">No orders yet</h3>
+        <p class="text-muted">You haven't placed any orders. Start shopping!</p>
+        <a href="{% url 'products:product_list' %}" class="btn btn-warning btn-lg fw-bold px-5 mt-2">
+            <i class="bi bi-grid me-2"></i>Start Shopping
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

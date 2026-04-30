@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4" style="max-width:500px;">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <!-- Header -->
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Create Account</h2>
+                <p class="text-muted">Join millions of happy shoppers</p>
+            </div>
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label fw-semibold small">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                        <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                    {% if field.help_text %}
+                        <div class="form-text text-muted small">{{ field.help_text }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-warning w-100 fw-bold py-2 mt-2">
+                    Create your Amazon Clone account
+                </button>
+            </form>
+
+            <hr>
+            <p class="text-center text-muted small mb-0">
+                Already have an account?
+                <a href="{% url 'accounts:login' %}" class="text-warning fw-bold text-decoration-none">Sign In</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Terms -->
+    <p class="text-center text-muted small mt-3">
+        By creating an account, you agree to Amazon Clone's
+        <a href="#" class="text-decoration-none">Conditions of Use</a> and
+        <a href="#" class="text-decoration-none">Privacy Notice</a>.
+    </p>
+</div>
+{% endblock %}

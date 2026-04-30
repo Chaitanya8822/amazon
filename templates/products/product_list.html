@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-4">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mt-2 mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">All Products</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+
+        <!-- Sidebar Filters -->
+        <div class="col-lg-2">
+            <div class="card border-0 shadow-sm sticky-top" style="top:80px;">
+                <div class="card-body">
+                    <h6 class="fw-bold border-bottom pb-2">Departments</h6>
+                    <ul class="list-unstyled mb-3">
+                        <li>
+                            <a href="{% url 'products:product_list' %}"
+                               class="text-decoration-none {% if not current_category %}fw-bold text-warning{% else %}text-dark{% endif %} small">
+                                All Products
+                            </a>
+                        </li>
+                        {% for cat in categories %}
+                        <li class="mt-1">
+                            <a href="{% url 'products:product_list' %}?category={{ cat.slug }}"
+                               class="text-decoration-none {% if current_category.slug == cat.slug %}fw-bold text-warning{% else %}text-dark{% endif %} small">
+                                {{ cat.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <h6 class="fw-bold border-bottom pb-2">Sort By</h6>
+                    <div class="d-grid gap-1">
+                        <a href="?{% if query %}q={{ query }}&{% endif %}{% if current_category %}category={{ current_category.slug }}&{% endif %}sort=newest"
+                           class="btn btn-sm {% if sort == 'newest' %}btn-warning{% else %}btn-outline-secondary{% endif %}">
+                            Newest First
+                        </a>
+                        <a href="?{% if query %}q={{ query }}&{% endif %}{% if current_category %}category={{ current_category.slug }}&{% endif %}sort=price_asc"
+                           class="btn btn-sm {% if sort == 'price_asc' %}btn-warning{% else %}btn-outline-secondary{% endif %}">
+                            Price: Low to High
+                        </a>
+                        <a href="?{% if query %}q={{ query }}&{% endif %}{% if current_category %}category={{ current_category.slug }}&{% endif %}sort=price_desc"
+                           class="btn btn-sm {% if sort == 'price_desc' %}btn-warning{% else %}btn-outline-secondary{% endif %}">
+                            Price: High to Low
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Products Grid -->
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h4 class="fw-bold mb-0">
+                        {% if current_category %}{{ current_category.name }}
+                        {% elif query %}"{{ query }}"
+                        {% else %}All Products{% endif %}
+                    </h4>
+                    <small class="text-muted">{{ products|length }} result{{ products|length|pluralize }}</small>
+                </div>
+                {% if query %}
+                <a href="{% url 'products:product_list' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-x me-1"></i>Clear Search
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Search Bar (inline) -->
+            <form method="get" action="{% url 'products:product_list' %}" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search products..."
+                           value="{{ query }}">
+                    {% if current_category %}
+                    <input type="hidden" name="category" value="{{ current_category.slug }}">
+                    {% endif %}
+                    <button class="btn btn-warning" type="submit"><i class="bi bi-search"></i> Search</button>
+                </div>
+            </form>
+
+            <!-- Products Grid -->
+            <div class="row g-3">
+                {% for product in products %}
+                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                    {% include 'products/partials/product_card.html' with product=product %}
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="bi bi-search display-1 text-muted"></i>
+                        <h4 class="mt-3 text-muted">No products found</h4>
+                        <p class="text-muted">Try a different search term or browse all categories.</p>
+                        <a href="{% url 'products:product_list' %}" class="btn btn-warning">Browse All Products</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-4 mt-3">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'products:product_list' %}">Products</a></li>
+            <li class="breadcrumb-item">
+                <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a>
+            </li>
+            <li class="breadcrumb-item active">{{ product.name|truncatewords:5 }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+
+        <!-- Product Image -->
+        <div class="col-md-5 col-lg-4">
+            <div class="card border-0 shadow-sm p-3 text-center">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="img-fluid product-detail-img rounded" alt="{{ product.name }}">
+                {% else %}
+                    <div class="product-detail-placeholder d-flex align-items-center justify-content-center rounded">
+                        <i class="bi bi-image display-1 text-muted"></i>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-4 col-lg-5">
+            <h2 class="fw-bold">{{ product.name }}</h2>
+            <p class="text-muted small">Category:
+                <a href="{{ product.category.get_absolute_url }}" class="text-decoration-none text-warning fw-semibold">
+                    {{ product.category.name }}
+                </a>
+            </p>
+
+            <!-- Price -->
+            <div class="mb-3">
+                {% if product.discount_price %}
+                    <div class="d-flex align-items-baseline gap-2">
+                        <span class="fs-3 fw-bold text-danger">₹{{ product.discount_price }}</span>
+                        <span class="text-muted text-decoration-line-through">₹{{ product.price }}</span>
+                        <span class="badge bg-danger">{{ product.discount_percentage }}% off</span>
+                    </div>
+                    <small class="text-success">You save ₹{{ product.price|floatformat:2 }}</small>
+                {% else %}
+                    <span class="fs-3 fw-bold">₹{{ product.price }}</span>
+                {% endif %}
+            </div>
+
+            <!-- Rating placeholder -->
+            <div class="mb-3">
+                <span class="text-warning">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i>
+                </span>
+                <span class="text-muted small ms-1">(128 reviews)</span>
+            </div>
+
+            <!-- Description -->
+            <hr>
+            <h6 class="fw-bold">About this product</h6>
+            <p class="text-muted">{{ product.description }}</p>
+
+        </div>
+
+        <!-- Buy Box -->
+        <div class="col-md-3 col-lg-3">
+            <div class="card border shadow-sm p-3">
+                <!-- Price -->
+                <div class="mb-2">
+                    {% if product.discount_price %}
+                        <span class="fs-4 fw-bold text-danger">₹{{ product.discount_price }}</span>
+                    {% else %}
+                        <span class="fs-4 fw-bold">₹{{ product.price }}</span>
+                    {% endif %}
+                </div>
+
+                <!-- Delivery -->
+                <p class="small text-success mb-2">
+                    <i class="bi bi-truck me-1"></i> FREE Delivery by Tomorrow
+                </p>
+
+                <!-- Stock -->
+                {% if product.in_stock %}
+                    <p class="text-success fw-semibold mb-3">
+                        <i class="bi bi-check-circle me-1"></i> In Stock ({{ product.stock }} left)
+                    </p>
+
+                    <!-- Add to Cart form -->
+                    <form method="post" action="{% url 'cart:cart_add' product.id %}">
+                        {% csrf_token %}
+                        <div class="mb-2">
+                            <label for="qty" class="form-label small fw-semibold">Quantity:</label>
+                            <select name="quantity" id="qty" class="form-select form-select-sm">
+                                {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= product.stock %}
+                                    <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100 fw-bold mb-2">
+                            <i class="bi bi-cart-plus me-1"></i> Add to Cart
+                        </button>
+                    </form>
+                    <a href="{% url 'orders:checkout' %}" class="btn btn-danger w-100 fw-bold">
+                        <i class="bi bi-lightning-fill me-1"></i> Buy Now
+                    </a>
+                {% else %}
+                    <p class="text-danger fw-semibold">
+                        <i class="bi bi-x-circle me-1"></i> Currently Unavailable
+                    </p>
+                {% endif %}
+
+                <!-- Secure -->
+                <hr>
+                <small class="text-muted text-center d-block">
+                    <i class="bi bi-shield-lock me-1"></i> Secure transaction
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    {% if related_products %}
+    <section class="mt-5">
+        <h4 class="fw-bold mb-3">Customers also viewed</h4>
+        <div class="row g-3">
+            {% for rp in related_products %}
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                {% include 'products/partials/product_card.html' with product=rp %}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+</div>
+{% endblock %}

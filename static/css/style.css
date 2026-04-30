@@ -1,0 +1,290 @@
+/* =============================================
+   Amazon Clone – Custom Styles
+   ============================================= */
+
+/* ---- Root Variables ---- */
+:root {
+    --amazon-dark: #131921;
+    --amazon-mid: #232f3e;
+    --amazon-orange: #febd69;
+    --amazon-yellow: #f3a847;
+    --amazon-blue: #37475a;
+    --amazon-light: #e3e6e6;
+}
+
+/* ---- Global ---- */
+body {
+    font-family: 'Amazon Ember', Arial, sans-serif;
+    background-color: #f0f2f2;
+    color: #0f1111;
+}
+
+a { transition: color 0.15s ease; }
+
+/* =============================================
+   NAVBAR
+   ============================================= */
+.amazon-navbar {
+    background-color: var(--amazon-dark);
+    padding-top: 6px;
+    padding-bottom: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.amazon-logo {
+    font-size: 1.5rem !important;
+    letter-spacing: -0.5px;
+    color: #fff !important;
+}
+
+.search-form .form-control {
+    border-radius: 0;
+    border: none;
+    font-size: 0.95rem;
+}
+
+.search-form .search-select {
+    border-radius: 4px 0 0 4px;
+    background-color: #f3f3f3;
+    font-size: 0.8rem;
+    border: none;
+    border-right: 1px solid #ccc;
+}
+
+.search-form .btn-warning {
+    border-radius: 0 4px 4px 0;
+    background-color: var(--amazon-orange);
+    border: none;
+}
+
+.amazon-secondary-nav {
+    background-color: var(--amazon-mid);
+}
+
+/* Cart Icon */
+.cart-icon { position: relative; }
+
+.cart-count {
+    font-size: 0.65rem;
+    min-width: 18px;
+    padding: 2px 4px;
+}
+
+/* Navbar hover */
+.amazon-navbar .nav-link:hover,
+.amazon-navbar .dropdown-toggle:hover {
+    outline: 1px solid rgba(255,255,255,0.4);
+    border-radius: 2px;
+}
+
+/* =============================================
+   HERO BANNER
+   ============================================= */
+.hero-banner {
+    background: linear-gradient(135deg, var(--amazon-dark) 0%, var(--amazon-mid) 50%, var(--amazon-blue) 100%);
+    min-height: 340px;
+}
+
+.hero-overlay {
+    min-height: 340px;
+    background: linear-gradient(rgba(19,25,33,0.7), rgba(19,25,33,0.5));
+}
+
+/* =============================================
+   SECTION HEADINGS
+   ============================================= */
+.section-heading {
+    border-left: 4px solid var(--amazon-orange);
+    padding-left: 12px;
+}
+
+/* =============================================
+   CATEGORY CARDS
+   ============================================= */
+.category-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
+}
+
+.category-img {
+    height: 100px;
+    object-fit: cover;
+}
+
+.category-placeholder {
+    height: 100px;
+    background-color: #f7f7f7;
+}
+
+.category-header {
+    background: linear-gradient(135deg, #fff9f0, #fff3cd);
+    border: 1px solid #ffd580;
+}
+
+/* =============================================
+   PRODUCT CARDS
+   ============================================= */
+.product-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+}
+
+.product-card-img {
+    height: 180px;
+    object-fit: contain;
+    padding: 12px;
+    background: #fff;
+}
+
+.product-card-placeholder {
+    height: 180px;
+    background-color: #f7f7f7;
+}
+
+.product-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    min-height: 2.8rem;
+}
+
+/* =============================================
+   PRODUCT DETAIL
+   ============================================= */
+.product-detail-img {
+    max-height: 400px;
+    object-fit: contain;
+    width: 100%;
+}
+
+.product-detail-placeholder {
+    height: 400px;
+    background-color: #f7f7f7;
+}
+
+/* =============================================
+   CART
+   ============================================= */
+.cart-item-img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    background: #f7f7f7;
+    padding: 8px;
+}
+
+/* =============================================
+   FEATURES STRIP
+   ============================================= */
+.features-strip {
+    background: linear-gradient(135deg, var(--amazon-dark), var(--amazon-mid));
+}
+
+/* =============================================
+   ORDER TRACKING TIMELINE
+   ============================================= */
+.timeline-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.order-row {
+    transition: background 0.15s;
+}
+
+.order-row:hover {
+    background-color: #fafafa;
+}
+
+/* =============================================
+   FOOTER
+   ============================================= */
+.amazon-footer {
+    background-color: var(--amazon-mid);
+}
+
+/* =============================================
+   BUTTONS
+   ============================================= */
+.btn-warning {
+    background-color: var(--amazon-orange);
+    border-color: var(--amazon-yellow);
+    color: #111;
+}
+
+.btn-warning:hover {
+    background-color: var(--amazon-yellow);
+    border-color: #e5931e;
+    color: #111;
+}
+
+/* =============================================
+   FORMS
+   ============================================= */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--amazon-orange);
+    box-shadow: 0 0 0 0.15rem rgba(254, 189, 105, 0.35);
+}
+
+/* =============================================
+   ALERTS
+   ============================================= */
+.alert {
+    border-left: 4px solid currentColor;
+    border-radius: 6px;
+}
+
+/* =============================================
+   BADGES
+   ============================================= */
+.badge {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* =============================================
+   CARDS
+   ============================================= */
+.card {
+    border-radius: 8px;
+}
+
+/* =============================================
+   RESPONSIVE TWEAKS
+   ============================================= */
+@media (max-width: 768px) {
+    .hero-banner,
+    .hero-overlay {
+        min-height: 220px;
+    }
+    .hero-overlay h1 {
+        font-size: 1.8rem;
+    }
+    .search-form .search-select {
+        display: none;
+    }
+    .cart-item-img {
+        width: 70px;
+        height: 70px;
+    }
+}

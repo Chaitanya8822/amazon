@@ -1,0 +1,29 @@
+# AiDE Project Intelligence — Amazon Clone
+
+## Project Patterns
+- Django settings module is `amazon_project` (NOT `amazon`)
+- Apps: accounts, products, cart, orders
+- Cart is purely session-based via `cart/cart.py` Cart class
+- UserProfile uses post_save signal on Django User
+- All URLs use slug-based routing for products/categories
+- Templates live in project-root `templates/` (not per-app)
+- Static files in project-root `static/`
+- Bootstrap 5 via CDN (no npm)
+- crispy_forms with bootstrap5 pack for all forms
+
+## File Naming Conventions
+- App-level URL files: `<app>/urls.py` with `app_name = '<app>'`
+- Context processors: `cart/context_processors.py`
+- Cart logic: `cart/cart.py` (Cart class)
+
+## Model Notes
+- Product.price = full price, Product.discount_price = sale price (nullable)
+- Category uses slug, Product uses slug (both unique)
+- Order.status choices: pending, processing, shipped, delivered, cancelled
+- OrderItem stores snapshot of price at time of order
+
+## Common Pitfalls
+- Always include `{% load crispy_forms_tags %}` before using `|crispy`
+- MEDIA_URL must be served in dev via `urlpatterns += static(...)`
+- Cart session key is `'cart'`
+- Login required views use `@login_required` decorator
